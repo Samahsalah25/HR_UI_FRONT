@@ -26,30 +26,38 @@ const RequestEmployepopup = ({ employeeId, onClose, onBack }) => {
 
     if (employeeId) fetchRequests();
   }, [employeeId]);
+const handleApprove = async (requestId) => {
+  try {
+    await axios.patch(
+      `http://localhost:4000/api/requests/${requestId}/approve`,
+      {}, // لو الباك بيرضى object فارغ
+      { withCredentials: true }
+    );
+    setRequests(prev =>
+      prev.map(r => r._id === requestId ? { ...r, status: "مقبول" } : r)
+    );
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    alert(err.response?.data?.message || "حدث خطأ أثناء الموافقة");
+  }
+};
 
-  const handleAccept = async (requestId) => {
-    try {
-      await axios.patch(`http://localhost:4000/api/requests/${requestId}`, { status: "مقبول" });
-      setRequests(prev =>
-        prev.map(r => r._id === requestId ? { ...r, status: "مقبول" } : r)
-      );
-    } catch (err) {
-      console.error(err);
-      alert("فشل تحديث الطلب");
-    }
-  };
+const handleReject = async (requestId) => {
+  try {
+    await axios.patch(
+      `http://localhost:4000/api/requests/${requestId}/reject`,
+      {},
+      { withCredentials: true }
+    );
+    setRequests(prev =>
+      prev.map(r => r._id === requestId ? { ...r, status: "مرفوض" } : r)
+    );
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    alert(err.response?.data?.message || "حدث خطأ أثناء الرفض");
+  }
+};
 
-  const handleReject = async (requestId) => {
-    try {
-      await axios.patch(`http://localhost:4000/api/requests/${requestId}`, { status: "مرفوض" });
-      setRequests(prev =>
-        prev.map(r => r._id === requestId ? { ...r, status: "مرفوض" } : r)
-      );
-    } catch (err) {
-      console.error(err);
-      alert("فشل تحديث الطلب");
-    }
-  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
@@ -104,7 +112,7 @@ const RequestEmployepopup = ({ employeeId, onClose, onBack }) => {
                       {req.status === "قيد المراجعة" ? (
   <div className="flex justify-center gap-2">
     <button 
-      onClick={() => handleAccept(req._id)}
+      onClick={() => handleApprove(req._id)}
       className="flex items-center gap-2 px-4 py-2 bg-[#E9E8E8] rounded-full text-sm font-semibold"
     >
       <Check size={16} className="text-[#FF9831]" />
