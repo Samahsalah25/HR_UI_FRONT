@@ -1,0 +1,12 @@
+#root {
+  max-width: 1280px;
+  margin: 10px;
+  padding: 2rem;
+  text-align: center;
+}
+.clip-path-left-wave {
+  clip-path: path("M0,0 C0,40 0,80 0,120 Q20,150 40,180 L220,180 L220,0 Z");
+}
+body{
+  margin: 10px !important;
+}
