@@ -130,8 +130,8 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
         name={name}
         value={value}
         onChange={onChange}
-        className={`w-full border rounded-[32px] p-3 pr-10 border-[#121217] appearance-none ${
-          value === "" ? "text-[#121217]" : "text-black"
+        className={`w-full border rounded-[32px] p-3 pr-10 border-[#410A5F] appearance-none ${
+          value === "" ? "text-[#410A5F]" : "text-[#410A5F]"
         }`}
       >
         <option value="" disabled hidden>
@@ -160,7 +160,7 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
         />
       </svg>
       {(errors[name] || serverErrors[name]) && (
-        <p className="text-red-500 text-sm mt-1">
+        <p className="text-[#FF9831] text-sm mt-1">
           {errors[name] || serverErrors[name]}
         </p>
       )}
@@ -170,44 +170,44 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
   return (
     <div className="flex flex-col bg-white rounded-[32px] text-right max-w-4xl mx-auto h-[85vh] relative">
       <div className="p-4">
-        <h2 className="text-lg font-bold">
+        <h2 className="text-lg font-bold text-[#FF9831]">
           {mode === "add" ? "إضافة موظف جديد" : "تعديل البيانات"}
         </h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-200">
+      <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-black custom-scrollbar">
         {/* معلومات أساسية */}
         <div>
-          <h3 className="text-md font-bold mb-3">معلومات أساسية</h3>
+          <h3 className="text-md font-bold mb-3 text-[#410A5F]">معلومات أساسية</h3>
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
-              <label className="block mb-1">الاسم</label>
+              <label className="block mb-1 text-[#410A5F]">الاسم</label>
               <input
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="أدخل اسم الموظف"
-                className="w-full border rounded-[32px] p-3 border-[#121217]"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F]"
               />
               {(errors.name || serverErrors.name) && (
-                <p className="text-red-500 text-sm">
+                <p className="text-[#FF9831] text-sm">
                   {errors.name || serverErrors.name}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block mb-1">الإيميل</label>
+              <label className="block mb-1 text-[#410A5F]">الإيميل</label>
               <input
                 name="email"
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="أدخل الإيميل"
-                className="w-full border rounded-[32px] p-3 border-[#121217]"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F]"
               />
               {(errors.email || serverErrors.email) && (
-                <p className="text-red-500 text-sm">
+                <p className="text-[#FF9831] text-sm">
                   {errors.email || serverErrors.email}
                 </p>
               )}
@@ -215,17 +215,17 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
 
             {mode === "add" && (
               <div>
-                <label className="block mb-1">كلمة المرور</label>
+                <label className="block mb-1 text-[#410A5F]">كلمة المرور</label>
                 <input
                   name="password"
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="أدخل كلمة المرور"
-                  className="w-full border rounded-[32px] p-3 border-[#121217]"
+                  className="w-full border rounded-[32px] p-3 border-[#410A5F]"
                 />
                 {(errors.password || serverErrors.password) && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-[#FF9831] text-sm">
                     {errors.password || serverErrors.password}
                   </p>
                 )}
@@ -233,39 +233,39 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
             )}
 
             <div>
-              <label className="block mb-1">المسمى الوظيفي</label>
+              <label className="block mb-1 text-[#410A5F]">المسمى الوظيفي</label>
               <input
                 name="jobTitle"
                 value={formData.jobTitle}
                 onChange={handleChange}
                 placeholder="أدخل المسمى الوظيفي"
-                className="w-full border rounded-[32px] p-3 border-[#121217]"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F]"
               />
               {(errors.jobTitle || serverErrors.jobTitle) && (
-                <p className="text-red-500 text-sm">
+                <p className="text-[#FF9831] text-sm">
                   {errors.jobTitle || serverErrors.jobTitle}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block mb-1">الرقم الوظيفي</label>
+              <label className="block mb-1 text-[#410A5F]">الرقم الوظيفي</label>
               <input
                 name="empNumber"
                 value={formData.empNumber}
                 onChange={handleChange}
                 placeholder="أدخل الرقم الوظيفي"
-                className="w-full border rounded-[32px] p-3 border-[#121217]"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F]"
               />
               {(errors.empNumber || serverErrors.empNumber) && (
-                <p className="text-red-500 text-sm">
+                <p className="text-[#FF9831] text-sm">
                   {errors.empNumber || serverErrors.empNumber}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block mb-1">القسم</label>
+              <label className="block mb-1 text-[#410A5F]">القسم</label>
               <SelectBox
                 name="department"
                 value={formData.department}
@@ -276,7 +276,7 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
             </div>
 
             <div>
-              <label className="block mb-1">المدير المباشر</label>
+              <label className="block mb-1 text-[#410A5F]">المدير المباشر</label>
               <SelectBox
                 name="manager"
                 value={formData.manager}
@@ -287,7 +287,7 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
             </div>
 
             <div>
-              <label className="block mb-1">نوع التوظيف</label>
+              <label className="block mb-1 text-[#410A5F]">نوع التوظيف</label>
               <SelectBox
                 name="employmentType"
                 value={formData.employmentType}
@@ -302,7 +302,7 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
             </div>
 
             <div>
-              <label className="block mb-1">مدة العقد</label>
+              <label className="block mb-1 text-[#410A5F]">مدة العقد</label>
               <SelectBox
                 name="contractDuration"
                 value={formData.contractDuration}
@@ -313,36 +313,36 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
             </div>
 
             <div>
-              <label className="block mb-1">تاريخ بدء العقد</label>
+              <label className="block mb-1 text-[#410A5F]">تاريخ بدء العقد</label>
               <input
                 type="date"
                 name="contractStart"
                 value={formData.contractStart}
                 onChange={handleChange}
-                className="w-full border rounded-[32px] p-3 border-[#121217] text-right"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F] text-right"
                 dir="rtl"
               />
               {(errors.contractStart || serverErrors.contractStart) && (
-                <p className="text-red-500 text-sm">
+                <p className="text-[#FF9831] text-sm">
                   {errors.contractStart || serverErrors.contractStart}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block mb-1">تاريخ بدء الإقامة (اختياري)</label>
+              <label className="block mb-1 text-[#410A5F]">تاريخ بدء الإقامة (اختياري)</label>
               <input
                 type="date"
                 name="residencyStart"
                 value={formData.residencyStart}
                 onChange={handleChange}
-                className="w-full border rounded-[32px] p-3 border-[#121217]  text-right"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F]  text-right"
                 dir="rtl"
               />
             </div>
 
             <div>
-              <label className="block mb-1">مدة الإقامة (اختياري)</label>
+              <label className="block mb-1 text-[#410A5F]">مدة الإقامة (اختياري)</label>
               <SelectBox
                 name="residencyDuration"
                 value={formData.residencyDuration}
@@ -356,24 +356,24 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
             </div>
 
             <div>
-              <label className="block mb-1">ساعات العمل الأسبوعية</label>
+              <label className="block mb-1 text-[#410A5F]">ساعات العمل الأسبوعية</label>
               <input
                 name="workHours"
                 value={formData.workHours}
                 onChange={handleChange}
                 placeholder="عدد الساعات"
-                className="w-full border rounded-[32px] p-3 border-[#121217]"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F]"
               />
               {(errors.workHours || serverErrors.workHours) && (
-                <p className="text-red-500 text-sm">
+                <p className="text-[#FF9831] text-sm">
                   {errors.workHours || serverErrors.workHours}
                 </p>
               )}
             </div>
 
             <div className="col-span-2">
-              <label className="block mb-1">مكان العمل (الفرع)</label>
-              <SelectBox
+              <label className="block mb-1 text-[#410A5F]">مكان العمل (الفرع)</label>
+              <SelectBox className='border border-[#410A5F]'
                 name="branch"
                 value={formData.branch}
                 onChange={handleChange}
@@ -386,65 +386,65 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
 
         {/* معلومات الراتب */}
         <div>
-          <h3 className="text-md font-bold mb-3">معلومات الراتب</h3>
+          <h3 className="text-md font-bold mb-3 text-[#410A5F]">معلومات الراتب</h3>
           <div className="grid grid-cols-1 gap-3">
             <div>
-              <label className="block mb-1">الراتب الأساسي</label>
+              <label className="block mb-1 text-[#410A5F]">الراتب الأساسي</label>
               <input
                 type="number"
                 name="basicSalary"
                 value={formData.basicSalary}
                 onChange={handleChange}
                 placeholder="الراتب الأساسي"
-                className="w-full border rounded-[32px] p-3 border-[#121217]"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F]"
               />
               {(errors.basicSalary || serverErrors.basicSalary) && (
-                <p className="text-red-500 text-sm">
+                <p className="text-[#FF9831] text-sm">
                   {errors.basicSalary || serverErrors.basicSalary}
                 </p>
               )}
             </div>
             <div>
-              <label className="block mb-1">بدل سكن</label>
+              <label className="block mb-1 text-[#410A5F]">بدل سكن</label>
               <input
                 type="number"
                 name="housing"
                 value={formData.housing}
                 onChange={handleChange}
                 placeholder="بدل السكن"
-                className="w-full border rounded-[32px] p-3 border-[#121217]"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F]"
               />
             </div>
             <div>
-              <label className="block mb-1">بدل انتقال</label>
+              <label className="block mb-1 text-[#410A5F]">بدل انتقال</label>
               <input
                 type="number"
                 name="transport"
                 value={formData.transport}
                 onChange={handleChange}
                 placeholder="بدل الانتقال"
-                className="w-full border rounded-[32px] p-3 border-[#121217]"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F]"
               />
             </div>
             <div>
-              <label className="block mb-1">أخرى</label>
+              <label className="block mb-1 text-[#410A5F]">أخرى</label>
               <input
                 type="number"
                 name="other"
                 value={formData.other}
                 onChange={handleChange}
                 placeholder="إضافي"
-                className="w-full border rounded-[32px] p-3 border-[#121217]"
+                className="w-full border rounded-[32px] p-3 border-[#410A5F]"
               />
             </div>
             <div>
-              <label className="block mb-1 font-bold">الإجمالي</label>
+              <label className="block mb-1 font-bold text-[#410A5F]">الإجمالي</label>
               <input
                 type="number"
                 name="total"
                 value={formData.total}
                 readOnly
-                className="w-full border rounded-[32px] p-3 bg-gray-100"
+                className="w-full border rounded-[32px] p-3 bg-gray-100 border-[#410A5F]"
               />
             </div>
           </div>
@@ -466,7 +466,7 @@ const EmployeeForm = ({ mode = "add", initialData = {}, onSubmit }) => {
               }
             }
           }}
-          className="w-full py-3 bg-black text-white rounded-[32px] font-bold"
+          className="w-full py-3 bg-[#FF9831] text-white rounded-[32px] font-bold"
         >
           {mode === "add" ? "إضافة موظف جديد" : "حفظ التعديلات"}
         </button>

@@ -104,8 +104,8 @@ const ReportsPage = () => {
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 transition w-[172px] rounded-tl-[16px] rounded-tr-[16px] ${
               activeTab === tab
-                ? "bg-[#121217] text-white"
-                : "bg-[#F8F8F866] text-[#5D5D5D7A]"
+                ? "bg-[#FF9831] text-white"
+                : "bg-[#E9E8E8] text-[#5D5D5D7A]"
             }`}
           >
             {tab}

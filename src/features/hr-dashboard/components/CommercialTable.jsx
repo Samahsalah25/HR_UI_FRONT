@@ -1,44 +1,100 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 export default function CommercialTable() {
-  const data = [
-    { type: "سجل تجاري", number: "12345", branch: "القاهرة", start: "01/01/2023", end: "01/01/2026", status: "ساري" },
-    { type: "ترخيص", number: "67890", branch: "الإسكندرية", start: "02/01/2023", end: "02/01/2025", status: "منتهي" },
-    { type: "ترخيص", number: "54321", branch: "الجيزة", start: "03/01/2023", end: "03/01/2025", status: "ساري" },
-  ];
+  const [activeTab, setActiveTab] = useState("سجل تجاري"); // أو "تراخيص"
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch function
+  const fetchData = async (category) => {
+    setLoading(true);
+    try {
+      const res = await axios.get("http://localhost:4000/api/licence", {
+        params: { category },
+        withCredentials: true, // لو عندك auth cookies
+      });
+      setData(res.data);
+    } catch (err) {
+      console.error("خطأ في جلب البيانات:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // أول مرة و كل ما يتغير التاب
+  useEffect(() => {
+    fetchData(activeTab);
+  }, [activeTab]);
 
   return (
-    <div style={{ backgroundColor: "#E6E6E64D" }} className=" rounded-2xl  p-4 flex flex-col h-full">
+    <div
+      style={{ backgroundColor: "#E6E6E64D" }}
+      className="relative rounded-2xl p-4 flex flex-col h-full"
+    >
       {/* الأزرار */}
       <div className="flex gap-2 mb-3">
-        <button className="px-3 py-1 rounded-lg bg-black text-white text-sm">سجل تجاري</button>
-        <button className="px-3 py-1 rounded-lg bg-gray-300 text-sm">تراخيص</button>
+        <button
+          onClick={() => setActiveTab("سجل تجاري")}
+          className={`px-3 py-1 rounded-lg text-sm ${
+            activeTab === "سجل تجاري"
+              ? "bg-[#FF9831] text-white"
+              : "bg-[#E9E8E866] text-[#A2A4A7]"
+          }`}
+        >
+          سجل تجاري
+        </button>
+        <button
+          onClick={() => setActiveTab("تراخيص")}
+          className={`px-3 py-1 rounded-lg text-sm ${
+            activeTab === "تراخيص"
+              ? "bg-[#FF9831] text-white"
+              : "bg-[#E9E8E866] text-[#A2A4A7]"
+          }`}
+        >
+          تراخيص
+        </button>
       </div>
 
       {/* الجدول */}
       <div className="flex-1 overflow-y-auto max-h-40 custom-scrollbar">
-        <table className="w-full text-sm text-right">
-          <thead className="text-gray-700 border-b border-[#D8D8D8]">
-            <tr>
-              <th className="p-2">النوع</th>
-              <th className="p-2">الرقم</th>
-              <th className="p-2">الفرع</th>
-              <th className="p-2">تاريخ الانضمام</th>
-              <th className="p-2">تاريخ الانتهاء</th>
-              <th className="p-2">الحالة</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, i) => (
-              <tr key={i} className="border-b border-gray-300 last:border-none">
-                <td className="p-2">{row.type}</td>
-                <td className="p-2">{row.number}</td>
-                <td className="p-2">{row.branch}</td>
-                <td className="p-2">{row.start}</td>
-                <td className="p-2">{row.end}</td>
-                <td className="p-2">{row.status}</td>
+        {loading ? (
+          <p className="text-center text-gray-500">جار التحميل...</p>
+        ) : data.length > 0 ? (
+          <table className="w-full text-sm text-right">
+            <thead className="text-[#410A5F] border-b border-[#D8D8D8]">
+              <tr>
+                <th className="p-2">النوع</th>
+                <th className="p-2">الرقم</th>
+                <th className="p-2">الفرع</th>
+                <th className="p-2">تاريخ الانضمام</th>
+                <th className="p-2">تاريخ الانتهاء</th>
+                <th className="p-2">الحالة</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.map((row) => (
+                <tr
+                  key={row._id}
+                  className="border-b border-gray-300 last:border-none text-[#1B1C1C]"
+                >
+                  <td className="p-2">{row.type}</td>
+                  <td className="p-2">{row.number}</td>
+                  <td className="p-2">{row.branch}</td>
+                  <td className="p-2">
+                    {new Date(row.issueDate).toLocaleDateString("ar-EG")}
+                  </td>
+                  <td className="p-2">
+                    {new Date(row.expiryDate).toLocaleDateString("ar-EG")}
+                  </td>
+                  <td className="p-2">{row.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="text-center text-gray-500">لا توجد بيانات</p>
+        )}
       </div>
 
       {/* ستايل للسكرول بار */}

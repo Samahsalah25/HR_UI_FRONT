@@ -9,6 +9,7 @@ import EmployeesPage from "./features/hr-dashboard/pages/EmployeesPage";
 import EmployeeAttendancePage from "./features/hr-dashboard/pages/EmployeeAttendancePage";
 import AddEmployeePage from "./features/hr-dashboard/pages/AddEmployeePage";
 import LoginPage from "./features/hr-dashboard/pages/LoginPage";
+import DashboardHome from "./features/hr-dashboard/pages/DashboardHome";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/employees/:id/attendance" element={<EmployeeAttendancePage />} />
           <Route path="/addemployee" element={<AddEmployeePage mode="add" />} />
           <Route path="/editemployee/:id" element={<AddEmployeePage mode="edit" />} />
+        <Route path="/dashhome" element={<DashboardHome/>} />
         </Route>
       </Routes>
     </Router>

@@ -24,15 +24,15 @@ width: 18px; height: 18px; background: #111827; border-top-right-radius: 12px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #121217; /* لون الجزء اللي بيتحرك - أسود/رمادي */
+  background-color: #410A5F; /* لون الجزء اللي بيتحرك - أسود/رمادي */
   border-radius: 10px;
-  border: 1px solid #f0f0f0; /* يعطي حافة لطيفة */
+  border: 1px solid #E9E8E8; /* يعطي حافة لطيفة */
 }
 
 /* Firefox */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #121217 #f0f0f0;
+  scrollbar-color: #410A5F #E9E8E8;
 }
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;

@@ -106,7 +106,7 @@ const EmployeesPage = () => {
         <>
           {/* الجدول */}
           <div
-            className="overflow-y-auto rounded-[16px] border-b-2 p-4"
+            className="overflow-y-auto rounded-[16px] border-b-2 p-4 custom-scrollbar"
             style={{ backgroundColor: "#E6E6E64D", maxHeight: "calc(100vh - 220px)" }}
           >
             <button className="flex items-center gap-2 px-3 py-2 border rounded-[16px] w-[100px] mb-3 text-[#410A5F] border-[#410A5F] hover:bg-[#410A5F] hover:text-white transition-colors">
