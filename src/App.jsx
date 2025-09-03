@@ -1,3 +1,4 @@
+// App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -10,6 +11,8 @@ import EmployeeAttendancePage from "./features/hr-dashboard/pages/EmployeeAttend
 import AddEmployeePage from "./features/hr-dashboard/pages/AddEmployeePage";
 import LoginPage from "./features/hr-dashboard/pages/LoginPage";
 import DashboardHome from "./features/hr-dashboard/pages/DashboardHome";
+import ProtectedRoute from "./features/hr-dashboard/components/ProtectedRoute";
+import ErrorPage from "./features/hr-dashboard/pages/ErrorPage";
 
 export default function App() {
   return (
@@ -17,18 +20,32 @@ export default function App() {
       <Routes>
         {/* صفحة تسجيل الدخول بدون الـ DashboardLayout */}
         <Route path="/" element={<LoginPage />} />
-
-        {/* باقي الصفحات داخل الـ DashboardLayout */}
-        <Route element={<DashboardLayout />}>
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/requests" element={<Requests />} />
-          <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/employees" element={<EmployeesPage />} />
-          <Route path="/employees/:id/attendance" element={<EmployeeAttendancePage />} />
-          <Route path="/addemployee" element={<AddEmployeePage mode="add" />} />
-          <Route path="/editemployee/:id" element={<AddEmployeePage mode="edit" />} />
-        <Route path="/dashhome" element={<DashboardHome/>} />
+        
+        {/* صفحة الخطأ */}
+        <Route path="/error" element={<ErrorPage />} />
+          <Route path="*" element={<ErrorPage />} />
+        {/* باقي الصفحات داخل الـ DashboardLayout مع الحماية */}
+        <Route 
+          path="/*" 
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="home" element={<HomePage />} />
+          <Route path="requests" element={<Requests />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="employees" element={<EmployeesPage />} />
+          <Route path="employees/:id/attendance" element={<EmployeeAttendancePage />} />
+          <Route path="addemployee" element={<AddEmployeePage mode="add" />} />
+          <Route path="editemployee/:id" element={<AddEmployeePage mode="edit" />} />
+          <Route path="dashhome" element={<DashboardHome />} />
+          
+         
         </Route>
+        
+    
       </Routes>
     </Router>
   );

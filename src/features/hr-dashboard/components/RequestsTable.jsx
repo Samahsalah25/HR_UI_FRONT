@@ -3,19 +3,16 @@ import { Check, X } from "lucide-react";
 import axios from "axios";
 
 export default function RequestsTable() {
-  const [activeTab, setActiveTab] = useState("إجازة"); // الافتراضي إجازة
+  const [activeTab, setActiveTab] = useState("إجازة");
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // دالة تجيب البيانات من الباك
   const fetchRequests = async (type) => {
     try {
       setLoading(true);
       const res = await axios.get(
         `http://localhost:4000/api/requests?type=${type}`,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       setRequests(res.data.items || []);
     } catch (err) {
@@ -25,7 +22,6 @@ export default function RequestsTable() {
     }
   };
 
-  // دالة قبول
   const handleApprove = async (id) => {
     try {
       await axios.patch(
@@ -33,13 +29,12 @@ export default function RequestsTable() {
         {},
         { withCredentials: true }
       );
-      fetchRequests(activeTab); // إعادة تحميل البيانات
+      fetchRequests(activeTab);
     } catch (err) {
       console.error("خطأ في قبول الطلب:", err);
     }
   };
 
-  // دالة رفض
   const handleReject = async (id) => {
     try {
       await axios.patch(
@@ -47,26 +42,20 @@ export default function RequestsTable() {
         {},
         { withCredentials: true }
       );
-      fetchRequests(activeTab); // إعادة تحميل البيانات
+      fetchRequests(activeTab);
     } catch (err) {
       console.error("خطأ في رفض الطلب:", err);
     }
   };
 
-  // أول ما يفتح الكومبوننت يجيب الإجازات
   useEffect(() => {
     fetchRequests(activeTab);
   }, [activeTab]);
 
   return (
-    <div
-      style={{}}
-      className=" p-4 flex flex-col h-80 min-h-0"
-    >
-      {/* العنوان */}
+    <div className="flex flex-col ">
       <h2 className="text-lg font-bold text-[#410A5F] mb-3">الطلبات</h2>
 
-      {/* الأزرار */}
       <div className="flex gap-2 mb-3">
         <button
           onClick={() => setActiveTab("إجازة")}
@@ -90,15 +79,14 @@ export default function RequestsTable() {
         </button>
       </div>
 
-      {/* الجدول */}
-      <div className="flex-1  min-h-2">
+      <div className="flex-1 overflow-y-auto min-h-0">
         {loading ? (
           <p className="text-center text-gray-500">جاري تحميل البيانات...</p>
         ) : requests.length === 0 ? (
           <p className="text-center text-gray-500">لا توجد طلبات</p>
         ) : (
-          <table className="w-full text-sm text-right">
-            <thead className="text-[#410A5F] border-b top-0 ">
+          <table className="w-full text-sm text-right table-auto">
+            <thead className="text-[#410A5F] border-b">
               <tr>
                 <th className="p-2">اسم الموظف</th>
                 <th className="p-2">نوع الطلب</th>
@@ -128,15 +116,17 @@ export default function RequestsTable() {
                   </td>
                   <td className="p-2">
                     {row.status === "قيد المراجعة" && (
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-wrap">
                         <button
                           onClick={() => handleApprove(row.id)}
+                          disabled={loading}
                           className="flex items-center gap-1 px-2 py-1 rounded-md bg-gray-200 text-orange-500 text-xs"
                         >
                           <Check size={14} /> قبول
                         </button>
                         <button
                           onClick={() => handleReject(row.id)}
+                          disabled={loading}
                           className="flex items-center gap-1 px-2 py-1 rounded-md bg-gray-200 text-gray-600 text-xs"
                         >
                           <X size={14} /> رفض

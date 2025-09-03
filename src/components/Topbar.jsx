@@ -1,52 +1,117 @@
-import React, { useEffect, useState } from "react";
-import { Bell, ChevronDown } from "lucide-react";
+import React, { useEffect, useState, useRef } from "react";
+import { Bell, ChevronDown, Menu, X } from "lucide-react";
+import { items } from "./Sidebar";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Topbar() {
   const [user, setUser] = useState({ name: "", role: "" });
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const menuRef = useRef();
 
+  // جلب بيانات المستخدم
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await fetch("http://localhost:4000/api/auth/me", {
           method: "GET",
-          credentials: "include", // لإرسال الكوكيز
+          credentials: "include",
         });
         const data = await res.json();
-        if (data.success) {
-          setUser(data.user);
-        }
+        if (data.success) setUser(data.user);
       } catch (err) {
         console.error("Failed to fetch user:", err);
       }
     };
-
     fetchUser();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("http://localhost:4000/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (res.ok) navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // إغلاق المنيو عند النقر خارجاً
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <header className="flex items-center justify-between px-6 py-3 bg-white/0">
-      {/* Search box */}
-      <div className="flex-1 flex justify-center">
-        <div className="w-[400px] h-12 bg-[#E6E6E64D] rounded-[24px] flex items-center gap-2 px-4">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+    <header className="flex items-center justify-between px-4 md:px-6 py-3   sticky top-0 z-30">
+      {/* زرار المنيو في الموبايل */}
+      <div className="relative">
+        <button
+          className="lg:hidden p-2 rounded-md bg-[#FF9831]"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <Menu className="w-6 h-6 text-white" />
+        </button>
+
+        {/* Dropdown Menu */}
+     {menuOpen && (
+  <div
+    ref={menuRef}
+    className="fixed inset-0 z-50 flex justify-start items-start"
+  >
+    {/* خلفية مظللة */}
+    <div
+      className="absolute inset-0 bg-black/50"
+      onClick={() => setMenuOpen(false)}
+    />
+
+    {/* القائمة */}
+    <div className="relative mt-16 ml-4 mr-4 w-64 bg-white rounded-br-[32px] rounded-bl-[32px]  overflow-y-auto max-h-[calc(100vh-4rem)]  animate-scaleY">
+      {/* روابط */}
+      <nav className="flex flex-col divide-y divide-[#FF9831]">
+        {items.filter(it => it.type === "link").map(it => (
+          <Link
+            key={it.key}
+            to={it.to}
+            className="px-4 py-3 hover:bg-[#FF9831]/10 text-gray-700 font-medium border-none"
+            onClick={() => setMenuOpen(false)}
           >
-            <path
-              d="M6.90906 2C5.93814 2 4.98903 2.28791 4.18174 2.82733C3.37444 3.36674 2.74524 4.13343 2.37368 5.03045C2.00213 5.92746 1.90491 6.91451 2.09433 7.86677C2.28375 8.81904 2.75129 9.69375 3.43783 10.3803C4.12438 11.0668 4.99909 11.5344 5.95135 11.7238C6.90362 11.9132 7.89067 11.816 8.78768 11.4444C9.6847 11.0729 10.4514 10.4437 10.9908 9.63639C11.5302 8.8291 11.8181 7.87998 11.8181 6.90906C11.818 5.60712 11.3008 4.35853 10.3802 3.43792C9.45959 2.51731 8.211 2.00008 6.90906 2Z"
-              stroke="#D0C7C7"
-              strokeMiterlimit="10"
-            />
-            <path
-              d="M10.5713 10.5713L13.9997 13.9997"
-              stroke="#D0C7C7"
-              strokeMiterlimit="10"
-              strokeLinecap="round"
-            />
-          </svg>
+            {it.label}
+          </Link>
+        ))}
+      </nav>
+
+      {/* أزرار الفوتر */}
+      <div className="p-4 flex flex-col gap-2">
+        <button
+          onClick={() => alert("صفحة اتصل بنا")}
+          className="w-full px-4 py-2 rounded-[23px] bg-[#FF9831] text-white hover:bg-[#410A5F]"
+        >
+          اتصل بنا
+        </button>
+        <button
+          onClick={handleLogout}
+          className="w-full px-4 py-2 rounded-[32px] bg-[#410A5F] text-white hover:bg-[#FF9831]"
+        >
+          تسجيل خروج
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+      </div>
+
+      {/* صندوق البحث */}
+      <div className="hidden md:flex flex-1 justify-center">
+        <div className="w-[400px] h-12 bg-[#E6E6E64D] rounded-[24px] flex items-center gap-2 px-4">
           <input
             type="text"
             placeholder="بحث"
@@ -55,29 +120,36 @@ export default function Topbar() {
         </div>
       </div>
 
-      {/* Right side */}
+      {/* أيقونات المستخدم والاشعارات */}
       <div className="flex items-center gap-4">
-        {/* Notifications */}
         <button className="w-10 h-10 rounded-full bg-[#E6E6E64D] grid place-content-center">
           <Bell className="w-5 h-5 text-gray-700" />
         </button>
-
-        {/* Admin info */}
         <div className="flex items-center gap-2 cursor-pointer">
           <img
             src="https://static.vecteezy.com/system/resources/previews/026/619/142/original/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg"
             alt="Admin"
             className="w-10 h-10 rounded-full"
           />
-          <div className="flex items-center gap-1">
-            <div className="flex flex-col text-right">
-              <span className="font-semibold text-sm">{user.name || "اسم الأدمن"}</span>
-              <span className="text-xs text-gray-400">{user.role || "الدور"}</span>
-            </div>
-            <ChevronDown className="w-4 h-4 text-gray-700" />
+          <div className="flex flex-col text-right">
+            <span className="font-semibold text-sm">{user.name || "اسم الأدمن"}</span>
+            <span className="text-xs text-gray-400">{user.role || "الدور"}</span>
           </div>
+          <ChevronDown className="w-4 h-4 text-gray-700" />
         </div>
       </div>
+
+      <style>
+        {`
+          @keyframes scaleY {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+          }
+          .animate-scaleY {
+            animation: scaleY 0.2s ease-out forwards;
+          }
+        `}
+      </style>
     </header>
   );
 }

@@ -2,17 +2,16 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function CommercialTable() {
-  const [activeTab, setActiveTab] = useState("سجل تجاري"); // أو "تراخيص"
+  const [activeTab, setActiveTab] = useState("سجل تجاري");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch function
   const fetchData = async (category) => {
     setLoading(true);
     try {
       const res = await axios.get("http://localhost:4000/api/licence", {
         params: { category },
-        withCredentials: true, // لو عندك auth cookies
+        withCredentials: true,
       });
       setData(res.data);
     } catch (err) {
@@ -22,18 +21,17 @@ export default function CommercialTable() {
     }
   };
 
-  // أول مرة و كل ما يتغير التاب
   useEffect(() => {
     fetchData(activeTab);
   }, [activeTab]);
 
   return (
     <div
-      style={{ backgroundColor: "#E6E6E64D" }}
-      className="relative rounded-2xl p-4 flex flex-col h-full"
+      // style={{ backgroundColor: "#E9E8E84D" }}
+      className="relative rounded-2xl p-4 flex flex-col "
     >
       {/* الأزرار */}
-      <div className="flex gap-2 mb-3">
+      <div className="flex flex-wrap gap-2 mb-3">
         <button
           onClick={() => setActiveTab("سجل تجاري")}
           className={`px-3 py-1 rounded-lg text-sm ${
@@ -57,41 +55,43 @@ export default function CommercialTable() {
       </div>
 
       {/* الجدول */}
-      <div className="flex-1 overflow-y-auto max-h-40 custom-scrollbar">
+      <div className="flex-1 overflow-auto max-h-40 custom-scrollbar">
         {loading ? (
           <p className="text-center text-gray-500">جار التحميل...</p>
         ) : data.length > 0 ? (
-          <table className="w-full text-sm text-right">
-            <thead className="text-[#410A5F] border-b border-[#D8D8D8]">
-              <tr>
-                <th className="p-2">النوع</th>
-                <th className="p-2">الرقم</th>
-                <th className="p-2">الفرع</th>
-                <th className="p-2">تاريخ الانضمام</th>
-                <th className="p-2">تاريخ الانتهاء</th>
-                <th className="p-2">الحالة</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row) => (
-                <tr
-                  key={row._id}
-                  className="border-b border-gray-300 last:border-none text-[#1B1C1C]"
-                >
-                  <td className="p-2">{row.type}</td>
-                  <td className="p-2">{row.number}</td>
-                  <td className="p-2">{row.branch}</td>
-                  <td className="p-2">
-                    {new Date(row.issueDate).toLocaleDateString("ar-EG")}
-                  </td>
-                  <td className="p-2">
-                    {new Date(row.expiryDate).toLocaleDateString("ar-EG")}
-                  </td>
-                  <td className="p-2">{row.status}</td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-right min-w-0">
+              <thead className="text-[#410A5F] border-b border-[#D8D8D8]">
+                <tr>
+                  <th className="p-2">النوع</th>
+                  <th className="p-2">الرقم</th>
+                  <th className="p-2">الفرع</th>
+                  <th className="p-2">تاريخ الانضمام</th>
+                  <th className="p-2">تاريخ الانتهاء</th>
+                  <th className="p-2">الحالة</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {data.map((row) => (
+                  <tr
+                    key={row._id}
+                    className="border-b border-gray-300 last:border-none text-[#1B1C1C]"
+                  >
+                    <td className="p-2">{row.type}</td>
+                    <td className="p-2">{row.number}</td>
+                    <td className="p-2">{row.branch}</td>
+                    <td className="p-2">
+                      {new Date(row.issueDate).toLocaleDateString("ar-EG")}
+                    </td>
+                    <td className="p-2">
+                      {new Date(row.expiryDate).toLocaleDateString("ar-EG")}
+                    </td>
+                    <td className="p-2">{row.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <p className="text-center text-gray-500">لا توجد بيانات</p>
         )}
@@ -103,11 +103,11 @@ export default function CommercialTable() {
           width: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: #9ca3af; /* gray-400 */
+          background-color: #9ca3af;
           border-radius: 8px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-          background-color: #e5e7eb; /* gray-200 */
+          background-color: #e5e7eb;
         }
       `}</style>
     </div>

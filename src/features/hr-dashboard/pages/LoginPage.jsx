@@ -1,20 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../../assets/images/logo.PNG";
+import axios from "axios";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     employeeNumber: "",
     password: "",
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(true); // ✅ هنا ضفت loading
   const navigate = useNavigate();
+
+  // ✅ أول ما الصفحة تفتح أسأل السيرفر: هل المستخدم Logged in؟
+  useEffect(() => {
+    axios
+      .get("http://localhost:4000/api/auth/me", { withCredentials: true })
+      .then((res) => {
+        if (res.data?.user) {
+          navigate("/home", { replace: true });
+        }
+      })
+      .catch(() => {
+        // مش logged in → يفضل في صفحة login
+      })
+      .finally(() => setLoading(false));
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" }); // إزالة الخطأ عند الكتابة
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const handleSubmit = async (e) => {
@@ -25,24 +43,24 @@ const LoginPage = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-        credentials: "include", // مهم عشان الكوكيز تتخزن على الباك
+        credentials: "include", // مهم عشان الكوكيز تتخزن
       });
 
       const data = await res.json();
 
       if (!res.ok) {
         setErrors({
-          employeeNumber: data.message.includes("credentials")
+          employeeNumber: data.message?.includes("credentials")
             ? "رقم التعريفي أو كلمة المرور غير صحيحة"
             : data.message || "حدث خطأ في تسجيل الدخول",
-          password: data.message.includes("credentials")
+          password: data.message?.includes("credentials")
             ? "رقم التعريفي أو كلمة المرور غير صحيحة"
             : data.message || "حدث خطأ في تسجيل الدخول",
         });
         return;
       }
 
-      // Redirect على صفحة Home بعد login ناجح
+      // ✅ بعد تسجيل الدخول بنجاح
       navigate("/home");
     } catch (err) {
       console.error(err);
@@ -52,6 +70,15 @@ const LoginPage = () => {
       });
     }
   };
+
+  // ✅ لو لسه بيتأكد من الكوكي
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <p className="text-lg text-gray-600">جاري التحقق...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
@@ -66,7 +93,10 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit} className="space-y-4 text-right" dir="rtl">
           {/* Employee Number */}
           <div className="relative">
-            <label className="block text-sm mb-1 font-bold" style={{ color: "#410A5F" }}>
+            <label
+              className="block text-sm mb-1 font-bold"
+              style={{ color: "#410A5F" }}
+            >
               رقم التعريفي (ID)
             </label>
             <div className="relative flex items-center">
@@ -83,13 +113,18 @@ const LoginPage = () => {
               <FaUser className="absolute right-4 text-gray-400 pointer-events-none" />
             </div>
             {errors.employeeNumber && (
-              <p className="text-blue-500 text-sm mt-1">{errors.employeeNumber}</p>
+              <p className="text-blue-500 text-sm mt-1">
+                {errors.employeeNumber}
+              </p>
             )}
           </div>
 
           {/* Password */}
           <div className="relative">
-            <label className="block text-sm mb-1 font-bold" style={{ color: "#410A5F" }}>
+            <label
+              className="block text-sm mb-1 font-bold"
+              style={{ color: "#410A5F" }}
+            >
               كلمة المرور
             </label>
             <div className="relative flex items-center">

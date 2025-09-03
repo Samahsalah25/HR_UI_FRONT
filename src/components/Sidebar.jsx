@@ -49,7 +49,7 @@ function IconChart() {
 }
 
 // عناصر السايدبار
-const items = [
+export const items = [
   { key: "home", label: "الرئيسية", Icon: IconHome, type: "link", to: "/home" },
   { key: "requests", label: "الطلبات", Icon: IconClipboard, type: "link", to: "/requests" },
   { key: "employees", label: "إدارة الموظفين", Icon: IconUsers, type: "link", to: "/employees" },

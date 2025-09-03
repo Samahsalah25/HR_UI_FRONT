@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function AttendanceTable() {
-  const [data, setData] = useState([]); 
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchAttendance = async () => {
@@ -25,18 +25,15 @@ export default function AttendanceTable() {
   }, []);
 
   return (
-    <div
-      style={{ backgroundColor: "#E6E6E64D" }}
-      className="rounded-2xl shadow p-4 flex flex-col h-full"
-    >
+    <div className="flex flex-col h-full rounded-2xl shadow p-4">
       <h2 className="text-lg font-bold mb-3 text-[#410A5F]">الحضور</h2>
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto min-h-0">
         {loading ? (
           <p className="text-center text-gray-500">جاري تحميل البيانات...</p>
         ) : data.length === 0 ? (
           <p className="text-center text-gray-500">لا توجد بيانات</p>
         ) : (
-          <table className="w-full text-sm text-right">
+          <table className="w-full text-sm text-right table-auto">
             <thead className="text-[#410A5F] border-b">
               <tr>
                 <th className="p-2">اسم الموظف</th>
@@ -45,14 +42,14 @@ export default function AttendanceTable() {
                 <th className="p-2">إجراء سريع</th>
               </tr>
             </thead>
-            <tbody className="">
+            <tbody>
               {data.map((row, i) => (
                 <tr key={i} className="border-b last:border-none">
                   <td className="p-2">{row.employeeName}</td>
                   <td className="p-2">{row.departmentName}</td>
                   <td className="p-2">{row.status}</td>
                   <td className="p-2">
-                    {row.status === "متأخر" || row.status === "غائب" ? (
+                    {(row.status === "متأخر" || row.status === "غائب") && (
                       <svg
                         width="66"
                         height="25"
@@ -77,8 +74,6 @@ export default function AttendanceTable() {
                           </clipPath>
                         </defs>
                       </svg>
-                    ) : (
-                      ""
                     )}
                   </td>
                 </tr>

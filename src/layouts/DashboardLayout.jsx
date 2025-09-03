@@ -5,17 +5,21 @@ import Topbar from "../components/Topbar";
 
 export default function DashboardLayout() {
   return (
-    <div className="flex justify-center items-center h-screen overflow-hidden p-[10px]">
-      {/* Container */}
-      <div className="flex flex-1 h-[calc(100vh-16px)] m-2 rounded-xl bg-white">
-        {/* Sidebar */}
-        <Sidebar />
+    <div className="h-screen lg:overflow-hidden
+     w-screen p-2">
+      {/* الحاوية */}
+      <div className="flex h-full w-full rounded-xl bg-white overflow-hidden">
+        {/* Sidebar - يظهر بس في الشاشات الكبيرة */}
+        <div className="hidden lg:block h-full">
+          <Sidebar />
+        </div>
 
         {/* Main content */}
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 h-full">
           <Topbar />
-          <main className="flex-1 p-6">
-            <Outlet /> {/* هنا تظهر كل صفحات الـ Dashboard */}
+         <main className="flex-1 p-4 lg:p-6 overflow-auto lg:overflow-hidden bg-white">
+
+            <Outlet />
           </main>
         </div>
       </div>
